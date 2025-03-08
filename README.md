@@ -25,6 +25,24 @@ Verilog is a **Hardware Description Language (HDL)** used for designing and simu
 
 ## Sample Verilog Code  
 ```verilog
-module AND_Gate (input A, input B, output Y);
-  assign Y = A & B;  // AND operation
+module UpDownCounter_4bit (
+    input clk,        // Clock signal
+    input reset,      // Asynchronous reset
+    input enable,     // Enable counting
+    input up_down,    // Control: 1 for up, 0 for down
+    output reg [3:0] count  // 4-bit counter output
+);
+
+  always @(posedge clk or posedge reset) begin
+    if (reset) 
+      count <= 4'b0000;  // Reset counter to 0
+    else if (enable) begin
+      if (up_down) 
+        count <= count + 1;  // Increment if up_down = 1
+      else 
+        count <= count - 1;  // Decrement if up_down = 0
+    end
+  end
+
 endmodule
+
